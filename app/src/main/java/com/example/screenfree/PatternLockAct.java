@@ -3,10 +3,16 @@ package com.example.screenfree;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.res.ResourcesCompat;
 
+import android.content.ComponentName;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -14,7 +20,10 @@ import android.widget.TextView;
 import com.andrognito.patternlockview.PatternLockView;
 import com.andrognito.patternlockview.listener.PatternLockViewListener;
 import com.andrognito.patternlockview.utils.PatternLockUtils;
+import com.esotericsoftware.kryo.util.Util;
 import com.example.screenfree.model.Password;
+import com.example.screenfree.services.BackgroundManager;
+import com.example.screenfree.utils.Utils;
 import com.shuhart.stepview.StepView;
 
 import org.w3c.dom.Text;
@@ -36,8 +45,24 @@ public class PatternLockAct extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pattern_lock);
+        BackgroundManager.getInstance().init(this).startService();
         initLayout();
         initPatternListener();
+        initIconApp();
+    }
+
+    private void initIconApp() {
+        if(getIntent().getStringExtra("broadcast_receiver") != null){
+            ImageView icon = findViewById(R.id.app_icon);
+            String current_app = new Utils(this).getLastApp();
+            ApplicationInfo applicationInfo = null;
+            try {
+                applicationInfo = getPackageManager().getApplicationInfo(current_app,0);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+            icon.setImageDrawable(applicationInfo.loadIcon(getPackageManager()));
+        }
     }
 
     private void initPatternListener() {
@@ -98,7 +123,9 @@ public class PatternLockAct extends AppCompatActivity {
     }
 
     private void startAct() {
-        startActivity(new Intent(this, MainActivity.class));
+         if(getIntent().getStringExtra("broadcast_receiver") == null){
+             startActivity(new Intent(this, MainActivity.class));
+         }
         finish();
     }
 
@@ -131,8 +158,20 @@ public class PatternLockAct extends AppCompatActivity {
             utilsPassword.setFirstStep(true);
             status_password.setText(utilsPassword.STATUS_FIRST_STEP);
         }else {
+            startCurrentHomePackage();
             finish();
             super.onBackPressed();
         }
+    }
+
+    private void startCurrentHomePackage() {
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_HOME);
+        ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+        ActivityInfo activityInfo = resolveInfo.activityInfo;
+        ComponentName componentName = new ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        startActivity(intent);
+        new Utils(this).clearLastApp();
     }
 }
