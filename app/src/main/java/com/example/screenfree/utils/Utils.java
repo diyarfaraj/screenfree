@@ -87,9 +87,8 @@ public class Utils {
                     result = event.getPackageName();
                 }
             }
-            if(TextUtils.isEmpty(result)){
+            if(!TextUtils.isEmpty(result))
                 return result;
-            }
         }
         return "";
     }

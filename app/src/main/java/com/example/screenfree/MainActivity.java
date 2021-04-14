@@ -51,24 +51,24 @@ public class MainActivity extends AppCompatActivity {
 
     private List<AppItem> getAllApps() {
         List<AppItem> results = new ArrayList<>();
-       // PackageManager pk = getPackageManager();
-       // Intent intent = new Intent(Intent.ACTION_MAIN,null);
-        //intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        //List<ResolveInfo> resolveInfoList = pk.queryIntentActivities(intent, 0);
-        //for(ResolveInfo resolveInfo: resolveInfoList){
-       //     ActivityInfo activityInfo = resolveInfo.activityInfo;
-        //    results.add(new AppItem(activityInfo.loadIcon(pk), activityInfo.loadLabel(pk).toString(),activityInfo.packageName));
-        //}
-        List<ApplicationInfo> packageInfos = getPackageManager().getInstalledApplications(0);
-        for (int i = 0; i < packageInfos.size(); i++) {
-            if(packageInfos.get(i).icon > 0) {
-                String name = packageInfos.get(i).loadLabel(getPackageManager()).toString();
-                Drawable icon = packageInfos.get(i).loadIcon(getPackageManager());
-                String packageName = packageInfos.get(i).packageName;
-                results.add(new AppItem(icon,name, packageName));
-            }
-
+        PackageManager pk = getPackageManager();
+        Intent intent = new Intent(Intent.ACTION_MAIN,null);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        List<ResolveInfo> resolveInfoList = pk.queryIntentActivities(intent, 0);
+        for(ResolveInfo resolveInfo: resolveInfoList){
+            ActivityInfo activityInfo = resolveInfo.activityInfo;
+            results.add(new AppItem(activityInfo.loadIcon(pk), activityInfo.loadLabel(pk).toString(),activityInfo.packageName));
         }
+        //List<ApplicationInfo> packageInfos = getPackageManager().getInstalledApplications(0);
+        //for (int i = 0; i < packageInfos.size(); i++) {
+        //    if(packageInfos.get(i).icon > 0) {
+        //        String name = packageInfos.get(i).loadLabel(getPackageManager()).toString();
+        //        Drawable icon = packageInfos.get(i).loadIcon(getPackageManager());
+       //         String packageName = packageInfos.get(i).packageName;
+       //         results.add(new AppItem(icon,name, packageName));
+       //     }
+//
+        //}
         return results;
     }
 
