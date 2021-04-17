@@ -13,6 +13,7 @@ public class ReceiverApplock extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Utils utils = new Utils(context);
         String appRunning = utils.getLauncherTopApp();
+        String lastApp = utils.getLastApp();
         if(utils.isLock(appRunning)){
             if(!appRunning.equals(utils.getLastApp())){
                 utils.clearLastApp();
