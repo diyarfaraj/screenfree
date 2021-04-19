@@ -2,10 +2,8 @@ package com.example.screenfree.services;
 
 import android.content.Context;
 import android.content.Intent;
-
 import androidx.annotation.NonNull;
 import androidx.core.app.JobIntentService;
-
 import com.example.screenfree.broadcast.ReceiverApplock;
 
 public class ServiceApplockJobIntent extends JobIntentService {

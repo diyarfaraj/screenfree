@@ -13,6 +13,7 @@ import androidx.annotation.RequiresApi;
 
 import java.util.List;
 
+import io.paperdb.Book;
 import io.paperdb.Paper;
 
 import static android.app.AppOpsManager.MODE_ALLOWED;
@@ -20,6 +21,8 @@ import static android.app.AppOpsManager.MODE_ALLOWED;
 public class Utils {
 
     private String EXTRA_LAST_APP = "EXTRA_LAST_APP";
+    private String LOCKED_APPS = "LOCKED_APPS";
+
     private Context context;
 
     public Utils( Context context) {
@@ -28,6 +31,7 @@ public class Utils {
     }
 
     public boolean isLock(String packageName){
+       // List<String> lockedApps = Paper.book().read(LOCKED_APPS);
         return Paper.book().read(packageName) != null;
     }
 
