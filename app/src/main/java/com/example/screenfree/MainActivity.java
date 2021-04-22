@@ -30,22 +30,24 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     LinearLayout layout_permission;
+    LinearLayout empty_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        
         initToolbar();
         initView();
     }
 
     private void initView() {
-        RecyclerView recyclerView = findViewById(R.id.recycler_view_app);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        //TODO: ADD EMPTY LIST PAGE IF THERE IS NO ADDED TO BOOK
+        
+        //RecyclerView recyclerView = findViewById(R.id.recycler_view_app);
+        //recyclerView.setHasFixedSize(true);
+        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         AppAdapter appAdapters = new AppAdapter(this, getAllApps());
-        recyclerView.setAdapter(appAdapters);
+        //recyclerView.setAdapter(appAdapters);
         layout_permission = findViewById(R.id.layout_permission);
     }
 
@@ -59,16 +61,16 @@ public class MainActivity extends AppCompatActivity {
             ActivityInfo activityInfo = resolveInfo.activityInfo;
             results.add(new AppItem(activityInfo.loadIcon(pk), activityInfo.loadLabel(pk).toString(),activityInfo.packageName));
         }
-        //List<ApplicationInfo> packageInfos = getPackageManager().getInstalledApplications(0);
-        //for (int i = 0; i < packageInfos.size(); i++) {
-        //    if(packageInfos.get(i).icon > 0) {
-        //        String name = packageInfos.get(i).loadLabel(getPackageManager()).toString();
-        //        Drawable icon = packageInfos.get(i).loadIcon(getPackageManager());
-       //         String packageName = packageInfos.get(i).packageName;
+       // List<ApplicationInfo> packageInfos = getPackageManager().getInstalledApplications(0);
+       // for (int i = 0; i < packageInfos.size(); i++) {
+       //     if(packageInfos.get(i).icon > 0) {
+       //        String name = packageInfos.get(i).loadLabel(getPackageManager()).toString();
+       //         Drawable icon = packageInfos.get(i).loadIcon(getPackageManager());
+       //       String packageName = packageInfos.get(i).packageName;
        //         results.add(new AppItem(icon,name, packageName));
-       //     }
-//
-        //}
+       //    }
+
+       // }
         return results;
     }
 

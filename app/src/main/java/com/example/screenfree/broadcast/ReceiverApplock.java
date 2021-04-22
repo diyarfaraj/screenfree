@@ -4,6 +4,7 @@ package com.example.screenfree.broadcast;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.example.screenfree.PatternLockAct;
 import com.example.screenfree.utils.Utils;
@@ -14,6 +15,14 @@ public class ReceiverApplock extends BroadcastReceiver {
         Utils utils = new Utils(context);
         String appRunning = utils.getLauncherTopApp();
         String lastApp = utils.getLastApp();
+        if (appRunning != null) {
+            Log.d("APP RUNNINGG: ", appRunning);
+        }
+
+        if(lastApp != null){
+            Log.d("LAST APP: ", lastApp);
+        }
+
         if(utils.isLock(appRunning)){
             if(!appRunning.equals(utils.getLastApp())){
                 utils.clearLastApp();

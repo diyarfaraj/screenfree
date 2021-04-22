@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Process;
 import android.text.TextUtils;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -31,15 +32,18 @@ public class Utils {
     }
 
     public boolean isLock(String packageName){
-       // List<String> lockedApps = Paper.book().read(LOCKED_APPS);
+        Log.d("IS LOCK: ", packageName);
         return Paper.book().read(packageName) != null;
     }
 
     public void lock(String packageName){
+        Log.d("LOCK: ", packageName);
+
         Paper.book().write(packageName,packageName);
     }
 
     public void unLock(String packageName){
+        Log.d("DELETE: ", packageName);
         Paper.book().delete(packageName);
     }
 
@@ -65,6 +69,8 @@ public class Utils {
         int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), ctx.getPackageName());
         return mode == MODE_ALLOWED;
     }
+//https://stackoverflow.com/questions/25440741/how-to-programmatically-set-a-lock-or-pin-for-an-app
+// https://stackoverflow.com/questions/28066231/how-to-gettopactivity-name-or-get-currently-running-application-package-name-i/28066580#28066580
 
     UsageStatsManager usageStatsManager;
     public String getLauncherTopApp(){
@@ -92,7 +98,9 @@ public class Utils {
                 }
             }
             if(!TextUtils.isEmpty(result))
+                Log.d("RESULT", result);
                 return result;
+
         }
         return "";
     }
