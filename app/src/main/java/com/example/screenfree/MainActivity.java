@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         //recyclerView.setLayoutManager(new LinearLayoutManager(this));
         AppAdapter appAdapters = new AppAdapter(this, getAllApps());
         //recyclerView.setAdapter(appAdapters);
+        empty_list = findViewById(R.layout.empty_list_page);
         layout_permission = findViewById(R.id.layout_permission);
     }
 
