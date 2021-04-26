@@ -38,7 +38,6 @@ public class Utils {
 
     public void lock(String packageName){
         Log.d("LOCK: ", packageName);
-
         Paper.book().write(packageName,packageName);
     }
 
@@ -69,8 +68,6 @@ public class Utils {
         int mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), ctx.getPackageName());
         return mode == MODE_ALLOWED;
     }
-//https://stackoverflow.com/questions/25440741/how-to-programmatically-set-a-lock-or-pin-for-an-app
-// https://stackoverflow.com/questions/28066231/how-to-gettopactivity-name-or-get-currently-running-application-package-name-i/28066580#28066580
 
     UsageStatsManager usageStatsManager;
     public String getLauncherTopApp(){
@@ -78,7 +75,6 @@ public class Utils {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             usageStatsManager = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
         }
-
         if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP){
             List<ActivityManager.RunningTaskInfo> taskInfoList = manager.getRunningTasks(1);
             if(null != taskInfoList && !taskInfoList.isEmpty()){
@@ -100,7 +96,6 @@ public class Utils {
             if(!TextUtils.isEmpty(result))
                 Log.d("RESULT", result);
                 return result;
-
         }
         return "";
     }

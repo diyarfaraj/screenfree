@@ -39,7 +39,7 @@ public class PatternLockAct extends AppCompatActivity {
     RelativeLayout relativeLayout;
     Password utilsPassword;
     String userPassword;
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,12 +52,12 @@ public class PatternLockAct extends AppCompatActivity {
     }
 
     private void initIconApp() {
-        if(getIntent().getStringExtra("broadcast_receiver") != null){
+        if (getIntent().getStringExtra("broadcast_receiver") != null) {
             ImageView icon = findViewById(R.id.app_icon);
             String current_app = new Utils(this).getLastApp();
             ApplicationInfo applicationInfo = null;
             try {
-                applicationInfo = getPackageManager().getApplicationInfo(current_app,0);
+                applicationInfo = getPackageManager().getApplicationInfo(current_app, 0);
             } catch (PackageManager.NameNotFoundException e) {
                 e.printStackTrace();
             }
@@ -81,19 +81,19 @@ public class PatternLockAct extends AppCompatActivity {
             @Override
             public void onComplete(List<PatternLockView.Dot> pattern) {
                 String pwd = PatternLockUtils.patternToString(patternLockView, pattern);
-                if(pwd.length() < 4){
+                if (pwd.length() < 4) {
                     status_password.setText(utilsPassword.SCHEMA_FAILED);
                     patternLockView.clearPattern();
                     return;
                 }
-                if(utilsPassword.getPassword()== null){
-                    if(utilsPassword.isFirstStep()){
+                if (utilsPassword.getPassword() == null) {
+                    if (utilsPassword.isFirstStep()) {
                         userPassword = pwd;
                         utilsPassword.setFirstStep(false);
                         status_password.setText(utilsPassword.STATUS_NEXT_STEP);
                         stepView.go(1, true);
                     } else {
-                        if(userPassword.equals(pwd)){
+                        if (userPassword.equals(pwd)) {
                             utilsPassword.setPassword(userPassword);
                             status_password.setText(utilsPassword.STATUS_PASSWORD_CORRECT);
                             stepView.done(true);
@@ -103,8 +103,8 @@ public class PatternLockAct extends AppCompatActivity {
                         }
 
                     }
-                }else {
-                    if(utilsPassword.isCorrect(pwd)){
+                } else {
+                    if (utilsPassword.isCorrect(pwd)) {
                         status_password.setText(utilsPassword.STATUS_PASSWORD_CORRECT);
                         startAct();
                     } else {
@@ -123,9 +123,9 @@ public class PatternLockAct extends AppCompatActivity {
     }
 
     private void startAct() {
-         if(getIntent().getStringExtra("broadcast_receiver") == null){
-             startActivity(new Intent(this, MainActivity.class));
-         }
+        if (getIntent().getStringExtra("broadcast_receiver") == null) {
+            startActivity(new Intent(this, MainActivity.class));
+        }
         finish();
     }
 
@@ -136,15 +136,15 @@ public class PatternLockAct extends AppCompatActivity {
         status_password = findViewById(R.id.status_password);
         utilsPassword = new Password(this);
         status_password.setText(utilsPassword.STATUS_FIRST_STEP);
-        if(utilsPassword.getPassword() == null){
+        if (utilsPassword.getPassword() == null) {
             normalLayout.setVisibility(View.GONE);
             stepView.setVisibility(View.VISIBLE);
             stepView.setStepsNumber(2);
-            stepView.go(0,true);
+            stepView.go(0, true);
         } else {
             normalLayout.setVisibility(View.VISIBLE);
             stepView.setVisibility(View.GONE);
-            int backColor = ResourcesCompat.getColor(getResources(),R.color.teal_200, null);
+            int backColor = ResourcesCompat.getColor(getResources(), R.color.teal_200, null);
             relativeLayout.setBackgroundColor(backColor);
             status_password.setTextColor(Color.WHITE);
 
@@ -153,11 +153,11 @@ public class PatternLockAct extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(utilsPassword.getPassword()==null && !utilsPassword.isFirstStep()){
-            stepView.go(0,true);
+        if (utilsPassword.getPassword() == null && !utilsPassword.isFirstStep()) {
+            stepView.go(0, true);
             utilsPassword.setFirstStep(true);
             status_password.setText(utilsPassword.STATUS_FIRST_STEP);
-        }else {
+        } else {
             startCurrentHomePackage();
             finish();
             super.onBackPressed();
@@ -170,7 +170,7 @@ public class PatternLockAct extends AppCompatActivity {
         ResolveInfo resolveInfo = getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
         ActivityInfo activityInfo = resolveInfo.activityInfo;
         ComponentName componentName = new ComponentName(activityInfo.applicationInfo.packageName, activityInfo.name);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
         startActivity(intent);
         new Utils(this).clearLastApp();
     }

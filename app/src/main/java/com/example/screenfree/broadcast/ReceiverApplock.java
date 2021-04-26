@@ -1,15 +1,25 @@
 
 package com.example.screenfree.broadcast;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.text.InputType;
 import android.util.Log;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.screenfree.PatternLockAct;
+import com.example.screenfree.ScreenBlocker;
 import com.example.screenfree.utils.Utils;
 
 public class ReceiverApplock extends BroadcastReceiver {
+
+
     @Override
     public void onReceive(Context context, Intent intent) {
         Utils utils = new Utils(context);

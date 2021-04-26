@@ -42,14 +42,21 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
         //TODO: ADD EMPTY LIST PAGE IF THERE IS NO ADDED TO BOOK
-        
-        //RecyclerView recyclerView = findViewById(R.id.recycler_view_app);
-        //recyclerView.setHasFixedSize(true);
-        //recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_app);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         AppAdapter appAdapters = new AppAdapter(this, getAllApps());
-        //recyclerView.setAdapter(appAdapters);
-        empty_list = findViewById(R.layout.empty_list_page);
+        recyclerView.setAdapter(appAdapters);
+        empty_list = findViewById(R.id.empty_list_layout);
         layout_permission = findViewById(R.id.layout_permission);
+    }
+
+    private void initAllAppList(){
+        RecyclerView recyclerView = findViewById(R.id.recycler_view_app);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        AppAdapter appAdapters = new AppAdapter(this, getAllApps());
+        recyclerView.setAdapter(appAdapters);
     }
 
     private List<AppItem> getAllApps() {
@@ -82,9 +89,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("App List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-
     }
 
     @Override
