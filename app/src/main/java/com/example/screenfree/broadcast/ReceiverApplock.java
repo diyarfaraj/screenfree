@@ -1,6 +1,7 @@
 
 package com.example.screenfree.broadcast;
 
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -30,18 +31,34 @@ public class ReceiverApplock extends BroadcastReceiver {
         }
 
         if(lastApp != null){
-            Log.d("LAST APP: ", lastApp);
+            Log.d("LAST APP:: ", lastApp);
         }
 
         if(utils.isLock(appRunning)){
             if(!appRunning.equals(utils.getLastApp())){
                 utils.clearLastApp();
                 utils.setLastApp(appRunning);
-                Intent i = new Intent(context, PatternLockAct.class);
+                Intent i = new Intent(context, ScreenBlocker.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 i.putExtra("broadcast_receiver", "broadcast_receiver");
                 context.startActivity(i);
+                killThisPackageIfRunning(context, appRunning);
+
             }
         }
+
+
     }
+///https://www.google.com/search?q=android.permission.KILL_BACKGROUND_PROCESSES&oq=android.permission.KILL_BACKGROUND_PROCESSES&aqs=chrome..69i57&sourceid=chrome&ie=UTF-8
+    public static void killThisPackageIfRunning(final Context context, String packageName){
+        ActivityManager activityManager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(startMain);
+
+        activityManager.killBackgroundProcesses(packageName);
+    }
+
 }

@@ -3,6 +3,8 @@ package com.example.screenfree;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AppOpsManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.ApplicationInfo;
@@ -31,6 +33,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     LinearLayout layout_permission;
     LinearLayout empty_list;
+    View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(appAdapters);
         empty_list = findViewById(R.id.empty_list_layout);
         layout_permission = findViewById(R.id.layout_permission);
+
+        if(!isAccessGranted()){
+            setPermission(view);
+        }
     }
 
     private void initAllAppList(){
@@ -113,5 +120,25 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         super.onResume();
+    }
+
+    private boolean isAccessGranted() {
+        try {
+            PackageManager packageManager = getPackageManager();
+            ApplicationInfo applicationInfo = packageManager.getApplicationInfo(getPackageName(), 0);
+            AppOpsManager appOpsManager = null;
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
+                appOpsManager = (AppOpsManager) getSystemService(Context.APP_OPS_SERVICE);
+            }
+            int mode = 0;
+            if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.KITKAT) {
+                mode = appOpsManager.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS,
+                        applicationInfo.uid, applicationInfo.packageName);
+            }
+            return (mode == AppOpsManager.MODE_ALLOWED);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }

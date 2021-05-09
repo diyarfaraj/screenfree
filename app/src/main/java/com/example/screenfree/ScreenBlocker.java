@@ -25,7 +25,7 @@ public class ScreenBlocker extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.empty_list_page);
-        setPassword();
+        //setPassword();
     }
 
 
