@@ -30,21 +30,21 @@ public class ReceiverApplock extends BroadcastReceiver {
             Log.d("APP RUNNINGG: ", appRunning);
         }
 
-        if(lastApp != null){
+       /* if(lastApp != null){
             Log.d("LAST APP:: ", lastApp);
-        }
+        }*/
 
         if(utils.isLock(appRunning)){
-            if(!appRunning.equals(utils.getLastApp())){
+           /* if(appRunning.equals(utils.getLastApp())){
                 utils.clearLastApp();
-                utils.setLastApp(appRunning);
+                utils.setLastApp(appRunning);*/
                 Intent i = new Intent(context, ScreenBlocker.class);
                 i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 i.putExtra("broadcast_receiver", "broadcast_receiver");
                 context.startActivity(i);
-                killThisPackageIfRunning(context, appRunning);
+                //killThisPackageIfRunning(context, appRunning);
 
-            }
+            //}
         }
 
 
@@ -55,7 +55,7 @@ public class ReceiverApplock extends BroadcastReceiver {
 
         Intent startMain = new Intent(Intent.ACTION_MAIN);
         startMain.addCategory(Intent.CATEGORY_HOME);
-        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(startMain);
 
         activityManager.killBackgroundProcesses(packageName);
